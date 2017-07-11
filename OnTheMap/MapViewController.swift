@@ -123,17 +123,21 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     
                     for location in locations{
                         
-                        let lat = CLLocationDegrees(location.latitude!)
-                        let long = CLLocationDegrees(location.longitude!)
+                        if location.latitude != nil && location.longitude != nil{
+                            let lat = CLLocationDegrees(location.latitude!)
+                            let long = CLLocationDegrees(location.longitude!)
+                            
+                            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude:long)
+                            
+                            let annotation = MKPointAnnotation()
+                            annotation.coordinate = coordinate
+                            annotation.title = "\(location.firstname ?? "") \(location.lastname ?? "")"
+                            annotation.subtitle = location.mediaUrl
+                            
+                            self.annotations.append(annotation)
+                        }
                         
-                        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude:long)
                         
-                        let annotation = MKPointAnnotation()
-                        annotation.coordinate = coordinate
-                        annotation.title = "\(location.firstname ?? "") \(location.lastname ?? "")"
-                        annotation.subtitle = location.mediaUrl
-                        
-                        self.annotations.append(annotation)
                         
                     }
                     self.mapView.addAnnotations(self.annotations)

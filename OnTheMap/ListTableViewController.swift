@@ -26,7 +26,6 @@ class ListTableViewController: UIViewController, UITableViewDelegate, UITableVie
         
         
         
-        
     }
     
     //reload the data
@@ -73,6 +72,7 @@ class ListTableViewController: UIViewController, UITableViewDelegate, UITableVie
             
             
         }
+        self.tableView.deselectRow(at: indexPath, animated: true)
         
     }
     

@@ -27,6 +27,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        self.emailTextfield.delegate = self
+        self.passwordTextfield.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {

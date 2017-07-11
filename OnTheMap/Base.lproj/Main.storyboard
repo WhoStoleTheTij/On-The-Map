@@ -235,14 +235,8 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="AAm-52-IFW">
-                                <rect key="frame" x="0.0" y="259" width="375" height="408"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="408" id="ezu-1S-nIu"/>
-                                </constraints>
-                            </mapView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Io6-lL-Btb">
-                                <rect key="frame" x="16" y="72" width="343" height="179"/>
+                                <rect key="frame" x="16" y="72" width="343" height="221"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zNe-Vp-OSr">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
@@ -256,20 +250,30 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZAE-xk-DOq">
+                                        <rect key="frame" x="0.0" y="74.5" width="343" height="30"/>
+                                        <color key="backgroundColor" red="0.98039215690000003" green="0.59999999999999998" blue="0.20392156859999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <state key="normal" title="Find Location">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="findLocation:" destination="g3f-iR-322" eventType="touchUpInside" id="nPu-JN-Llj"/>
+                                        </connections>
+                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your URL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Qm-no-MM0">
-                                        <rect key="frame" x="0.0" y="74.5" width="343" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="116.5" width="343" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your URL" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mmi-ZZ-mhK">
-                                        <rect key="frame" x="0.0" y="107" width="343" height="30"/>
+                                        <rect key="frame" x="0.0" y="149" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t08-cr-OJQ">
-                                        <rect key="frame" x="0.0" y="149" width="343" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t08-cr-OJQ">
+                                        <rect key="frame" x="0.0" y="191" width="343" height="30"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.59999999999999998" blue="0.20392156859999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <state key="normal" title="Submit">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -279,10 +283,10 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="179" id="vxu-xj-7tl"/>
-                                </constraints>
                             </stackView>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="AAm-52-IFW">
+                                <rect key="frame" x="0.0" y="301" width="375" height="366"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -294,13 +298,14 @@
                             <constraint firstAttribute="trailing" secondItem="Io6-lL-Btb" secondAttribute="trailing" constant="16" id="bhH-oD-Lh9"/>
                             <constraint firstItem="Egk-Xn-faM" firstAttribute="top" secondItem="NeR-eM-dZD" secondAttribute="bottom" constant="8" id="efM-id-XnC"/>
                             <constraint firstAttribute="trailing" secondItem="Egk-Xn-faM" secondAttribute="trailing" id="inL-9i-mmV"/>
+                            <constraint firstItem="AAm-52-IFW" firstAttribute="top" secondItem="Io6-lL-Btb" secondAttribute="bottom" constant="8" id="jGP-ap-Q1a"/>
                             <constraint firstItem="Io6-lL-Btb" firstAttribute="top" secondItem="Egk-Xn-faM" secondAttribute="bottom" id="otj-kN-djJ"/>
-                            <constraint firstItem="AAm-52-IFW" firstAttribute="top" secondItem="Io6-lL-Btb" secondAttribute="bottom" constant="8" id="qoL-94-tMA"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="locationTextfield" destination="YaA-Mz-iDd" id="Elh-cQ-npK"/>
                         <outlet property="mapView" destination="AAm-52-IFW" id="82m-eO-TNO"/>
+                        <outlet property="submitButton" destination="t08-cr-OJQ" id="3Mr-xs-2M3"/>
                         <outlet property="urlTextfield" destination="mmi-ZZ-mhK" id="qsw-ow-OJg"/>
                     </connections>
                 </viewController>

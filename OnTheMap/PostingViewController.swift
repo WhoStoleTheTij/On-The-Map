@@ -15,6 +15,7 @@ class PostingViewController: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var locationTextfield: UITextField!
     @IBOutlet weak var urlTextfield: UITextField!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var submitButton: UIButton!
     
     let geocoder = CLGeocoder()
     
@@ -22,9 +23,16 @@ class PostingViewController: UIViewController, MKMapViewDelegate {
     
     var connectionHandler = ConnectionHandler()
     
+    var parameters:[String:AnyObject]? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        activityIndicator.frame = CGRect(origin: CGPoint(x:0, y:0), size: CGSize(width:self.view.frame.width, height:self.view.frame.height))
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        
         // Do any additional setup after loading the view.
     }
 
@@ -40,8 +48,9 @@ class PostingViewController: UIViewController, MKMapViewDelegate {
     }
     
     
-    //Mark: submit a new location to the
-    @IBAction func submitLocation(_ sender: Any) {
+    
+    @IBAction func findLocation(_ sender: Any) {
+        
         
         guard let locationText = self.locationTextfield.text else {
             self.showUserErrorMessage(message: "Please enter a location")
@@ -49,6 +58,8 @@ class PostingViewController: UIViewController, MKMapViewDelegate {
         }
         let mediaUrl = self.urlTextfield.text
         
+        
+        self.view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
         
@@ -83,8 +94,9 @@ class PostingViewController: UIViewController, MKMapViewDelegate {
                             annotation.coordinate = mapCoord
                             annotation.title = "\(results?["firstname"] ?? "") \(results?["lastname"] ?? "")"
                             annotation.subtitle = mediaUrl
+                            self.mapView.addAnnotation(annotation)
                             
-                            var parameters = [
+                            self.parameters = [
                                 "uniquekey" : Constants.User.studentId ,
                                 "firstName" : (results?["firstname"]) ?? "",
                                 "lastname" : (results?["lastname"]) ?? "",
@@ -94,42 +106,14 @@ class PostingViewController: UIViewController, MKMapViewDelegate {
                                 "longitude" : long
                                 ] as [String : AnyObject]
                             
-                            self.connectionHandler.parsePostMethodTask(parameters: parameters, completionHandler: { (result, error) in
-                                
-                                if error != nil{
-                                    
-                                    DispatchQueue.main.async {
-                                        self.showUserErrorMessage(message: "There was an error posting your location to the server")
-                                    }
-                                    
-                                    
-                                }else{
-                                    self.mapView.addAnnotation(annotation)
-                                    
-                                    let span = MKCoordinateSpanMake(0.5, 0.5)
-                                    let region = MKCoordinateRegionMake(annotation.coordinate, span)
-                                    self.mapView.setRegion(region, animated: true)
-                                    
-                                    let date = Date();
-                                    let formatter = DateFormatter()
-                                    formatter.dateFormat = "dd/mm/yy"
-                                    let d = formatter.string(from: date)
-                                    parameters["createdAt"] = d as AnyObject
-                                    
-                                    
-                                    DispatchQueue.main.async{
-                                        let studentLocation = StudentLocation(parameters: parameters as [String:AnyObject])
-                                        Constants.User.studentLocations.append(studentLocation)
-                                        self.dismiss(animated: true, completion: nil)
-                                    }
-                                    
-                                    self.activityIndicator.stopAnimating()
-                                    
-                                }
-                                
-                            })
+                            let span = MKCoordinateSpanMake(0.5, 0.5)
+                            let region = MKCoordinateRegionMake(annotation.coordinate, span)
+                            self.mapView.setRegion(region, animated: true)
                             
+                            self.activityIndicator.stopAnimating()
+                            self.view.willRemoveSubview(self.activityIndicator)
                             
+                            self.submitButton.isEnabled = true
                         }
                         
                     })
@@ -139,6 +123,48 @@ class PostingViewController: UIViewController, MKMapViewDelegate {
             }
             
         }
+        
+        
+    }
+    
+    
+    //Mark: submit a new location to the
+    @IBAction func submitLocation(_ sender: Any) {
+        
+        if self.parameters != nil{
+            self.connectionHandler.parsePostMethodTask(parameters: self.parameters!, completionHandler: { (result, error) in
+                
+                if error != nil{
+                    
+                    DispatchQueue.main.async {
+                        self.showUserErrorMessage(message: "There was an error posting your location to the server")
+                    }
+                    
+                    
+                }else{
+                    let date = Date();
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "dd/mm/yy"
+                    let d = formatter.string(from: date)
+                    self.parameters?["createdAt"] = d as AnyObject
+                    
+                    DispatchQueue.main.async{
+                        
+                        
+                        let studentLocation = StudentLocation(parameters: self.parameters!)
+                        Constants.User.studentLocations.append(studentLocation)
+                        self.dismiss(animated: true, completion: nil)
+                        
+                    }
+                    
+                    
+                }
+                
+            })
+        }else{
+            self.showUserErrorMessage(message: "Something has gone wrong. Please try again")
+        }
+        
         
         
         
