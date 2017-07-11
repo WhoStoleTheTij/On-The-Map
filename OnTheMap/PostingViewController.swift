@@ -87,34 +87,43 @@ class PostingViewController: UIViewController, MKMapViewDelegate {
                     
                     self.connectionHandler.fetchUserData(userId: Constants.User.studentId, completionHandler: { (results, error) in
                         
-                        if error != nil{
-                            self.showUserErrorMessage(message: error!)
-                        }else{
-                            let annotation = MKPointAnnotation()
-                            annotation.coordinate = mapCoord
-                            annotation.title = "\(results?["firstname"] ?? "") \(results?["lastname"] ?? "")"
-                            annotation.subtitle = mediaUrl
-                            self.mapView.addAnnotation(annotation)
-                            
-                            self.parameters = [
-                                "uniquekey" : Constants.User.studentId ,
-                                "firstName" : (results?["firstname"]) ?? "",
-                                "lastname" : (results?["lastname"]) ?? "",
-                                "mapString" : locationText,
-                                "mediaURL" : mediaUrl ?? "",
-                                "latitude" : lat,
-                                "longitude" : long
-                                ] as [String : AnyObject]
-                            
-                            let span = MKCoordinateSpanMake(0.5, 0.5)
-                            let region = MKCoordinateRegionMake(annotation.coordinate, span)
-                            self.mapView.setRegion(region, animated: true)
-                            
+                        DispatchQueue.main.async{
                             self.activityIndicator.stopAnimating()
-                            self.view.willRemoveSubview(self.activityIndicator)
+                            //self.view.willRemoveSubview(self.activityIndicator)
+                            self.activityIndicator.removeFromSuperview()
                             
-                            self.submitButton.isEnabled = true
+                            if error != nil{
+                                self.showUserErrorMessage(message: error!)
+                            }else{
+                                let annotation = MKPointAnnotation()
+                                annotation.coordinate = mapCoord
+                                annotation.title = "\(results?["firstname"] ?? "") \(results?["lastname"] ?? "")"
+                                annotation.subtitle = mediaUrl
+                                self.mapView.addAnnotation(annotation)
+                                
+                                self.parameters = [
+                                    "uniquekey" : Constants.User.studentId ,
+                                    "firstName" : (results?["firstname"]) ?? "",
+                                    "lastname" : (results?["lastname"]) ?? "",
+                                    "mapString" : locationText,
+                                    "mediaURL" : mediaUrl ?? "",
+                                    "latitude" : lat,
+                                    "longitude" : long
+                                    ] as [String : AnyObject]
+                                
+                                let span = MKCoordinateSpanMake(0.5, 0.5)
+                                let region = MKCoordinateRegionMake(annotation.coordinate, span)
+                                self.mapView.setRegion(region, animated: true)
+                                
+                                
+                                
+                                self.submitButton.isEnabled = true
+                            }
+                            
                         }
+                        
+                        
+                        
                         
                     })
                     
